@@ -128,7 +128,7 @@
 				verageRating[oneUser][each][2] = averageRating[oneUser][each][1] / averageRating[oneUser][each][0]
 
 ![推荐平均分](./pictures/averageRating.png "推荐平均分")  
-+ 计算MAE（总体的和每个用户的  
++ 计算MAE  
 
 		eachUserMAE = {}
 		for oneUser in averageRating.keys():
