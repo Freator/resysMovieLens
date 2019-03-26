@@ -1,5 +1,7 @@
 # 推荐系统课程作业  
-本次课程作业在small-movielens数据集的基础上，对用户（待续）  
+本次课程作业在small-movielens数据集的基础上，对用户、电影、评分数据进行了处理，
+然后根据Pearson相关系数计算出用户与其他用户之间的相似度，根据相似度进行推荐和
+预测评分，最后再根据数据集中的测试数据，计算该推荐系统的MAE，预测命中率等。
 ## **1. 变量说明**  
 **users** :保存所有用户，不重复list类型  
 存储结构：[user1,user2,...]  
@@ -24,16 +26,16 @@
 **eachUserMAE** :保存对每个用户而言计算出的MAE  
 存储结构：{user1:MAE,user2:MAE,...}  
 ## **2. 程序介绍**  
-<1>首先对数据进行处理，我们可以看到原始数据文件`u1.base`中的数据如下图所示  
++ 首先对数据进行处理，我们可以看到原始数据文件`u1.base`中的数据如下图所示  
 ![原始数据](./pictures/baseData.png "原始数据")  
 数据是由(userId, movieId, rating, timestamp)四个部分组成，我们这里使用的是前3个数据属性，即userId, movieId和rating  
 用变量users保存所有的userId,userWatchedMovie保存所有的用户看过的所有的电影  
 
 ![用户看过的电影](./pictures/userWatchedMovie.png "用户看过的电影")  
 然后是对测试数据文件的读取，同上面做类似的处理  
-<2>计算用户与用户之间共同看过的电影  
++ 计算用户与用户之间共同看过的电影  
 ![共同看过的电影](./pictures/movieUser.png "共同看过的电影")  
-<3>计算用户与用户之间的相似度  
++ 计算用户与用户之间的相似度  
 在这个部分我们利用Pearson相关系数计算出两两用户之间的相似度  
 
             avgUserA = 0
@@ -66,7 +68,7 @@
             else:
                 userSimilarity[a][b] = 0
 
-<4>每个用户都取前n个最相似的用户，以便后续进行推荐，这里n=10  
++ 每个用户都取前n个最相似的用户，以便后续进行推荐，这里n=10  
 
         for compareUserId in users:
             if currentUserId == compareUserId:
@@ -81,7 +83,7 @@
             allUserTopNSim[currentUserId][single[0]] = single[1]
 
 ![TopN个相似用户](./pictures/allUserTop10Sim.png "TopN个相似用户")  
-<5>从最相似的用户中推荐，每个相似用户推荐两部，那么每个用户就能得到推荐的20部电影  
++ 从最相似的用户中推荐，每个相似用户推荐两部，那么每个用户就能得到推荐的20部电影  
 
     if movie not in userWatchedMovie[oneUser].keys():
         if int(oneUser) < int(simUser):
@@ -99,7 +101,7 @@
             number += 1
 
 ![推荐和预测评分](./pictures/recoMovieWithRating.png "推荐和预测评分")  
-<6>从推荐的电影和测试集中找到一起看过的电影  
++ 从推荐的电影和测试集中找到一起看过的电影  
 
     movieAlsoInTest = {}
     for oneUser in usersTest:
@@ -112,7 +114,7 @@
                     continue
 
 ![movieAlsoInTest](./pictures/movieAlsoInTest.png "测试集中用户也看过的电影")  
-<7>计算每个用户被推荐的每部电影的次数和平均分  
++ 计算每个用户被推荐的每部电影的次数和平均分  
 
     averageRating = {}
     for oneUser in usersTest:
@@ -126,7 +128,7 @@
             averageRating[oneUser][each][2] = averageRating[oneUser][each][1] / averageRating[oneUser][each][0]
 
 ![推荐平均分](./pictures/averageRating.png "推荐平均分")  
-<8>计算MAE（总体的和每个用户的  
++ 计算MAE（总体的和每个用户的  
 
     eachUserMAE = {}
     for oneUser in averageRating.keys():
