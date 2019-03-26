@@ -85,63 +85,63 @@
 ![TopN个相似用户](./pictures/allUserTop10Sim.png "TopN个相似用户")  
 + 从最相似的用户中推荐，每个相似用户推荐两部，那么每个用户就能得到推荐的20部电影  
 
-    if movie not in userWatchedMovie[oneUser].keys():
-        if int(oneUser) < int(simUser):
-            length = len(movieUser[oneUser][simUser])
-            sumOne = 0.0
-            sumSim = 0.0
-            for i in movieUser[oneUser][simUser]:
-                sumOne += userWatchedMovie[oneUser].get(i)
-                sumSim += userWatchedMovie[simUser].get(i)
-            sumSim += userWatchedMovie[simUser].get(movie)
-            avgOneUser = sumOne / length
-            avgSimUser = sumSim / (length + 1)
-            predictionRating = avgOneUser + (userWatchedMovie[simUser][movie] - avgSimUser)
-            recommendedMovies[oneUser][simUser][movie] = predictionRating
-            number += 1
+	if movie not in userWatchedMovie[oneUser].keys():
+		if int(oneUser) < int(simUser):
+			length = len(movieUser[oneUser][simUser])
+			sumOne = 0.0
+			sumSim = 0.0
+			for i in movieUser[oneUser][simUser]:
+				sumOne += userWatchedMovie[oneUser].get(i)
+				sumSim += userWatchedMovie[simUser].get(i)
+			sumSim += userWatchedMovie[simUser].get(movie)
+			avgOneUser = sumOne / length
+			avgSimUser = sumSim / (length + 1)
+			predictionRating = avgOneUser + (userWatchedMovie[simUser][movie] - avgSimUser)
+			recommendedMovies[oneUser][simUser][movie] = predictionRating
+			number += 1
 
 ![推荐和预测评分](./pictures/recoMovieWithRating.png "推荐和预测评分")  
 + 从推荐的电影和测试集中找到一起看过的电影  
 
-    movieAlsoInTest = {}
-    for oneUser in usersTest:
-        movieAlsoInTest.setdefault(oneUser, [])
-        for simUser in recommendedWithRating[oneUser].keys():
-            for movie in recommendedWithRating[oneUser][simUser].keys():
-                if movie in userWatchedMovieTest[oneUser].keys():
-                    movieAlsoInTest[oneUser].append(movie)
-                else:
-                    continue
+	movieAlsoInTest = {}
+	for oneUser in usersTest:
+		movieAlsoInTest.setdefault(oneUser, [])
+		for simUser in recommendedWithRating[oneUser].keys():
+			for movie in recommendedWithRating[oneUser][simUser].keys():
+				if movie in userWatchedMovieTest[oneUser].keys():
+					movieAlsoInTest[oneUser].append(movie)
+				else:
+					continue
 
 ![movieAlsoInTest](./pictures/movieAlsoInTest.png "测试集中用户也看过的电影")  
 + 计算每个用户被推荐的每部电影的次数和平均分  
 
-    averageRating = {}
-    for oneUser in usersTest:
-        averageRating.setdefault(oneUser, {})
-        for simUser in recommendedWithRating[oneUser].keys():
-            for movie in recommendedWithRating[oneUser][simUser].keys():
-                averageRating[oneUser].setdefault(movie, [0, 0.0, 0.0])
-                averageRating[oneUser][movie][0] += 1
-                averageRating[oneUser][movie][1] += recommendedWithRating[oneUser][simUser].get(movie)
-        for each in averageRating[oneUser].keys():
-            averageRating[oneUser][each][2] = averageRating[oneUser][each][1] / averageRating[oneUser][each][0]
+	averageRating = {}
+	for oneUser in usersTest:
+		averageRating.setdefault(oneUser, {})
+		for simUser in recommendedWithRating[oneUser].keys():
+			for movie in recommendedWithRating[oneUser][simUser].keys():
+				averageRating[oneUser].setdefault(movie, [0, 0.0, 0.0])
+				averageRating[oneUser][movie][0] += 1
+				averageRating[oneUser][movie][1] += recommendedWithRating[oneUser][simUser].get(movie)
+		for each in averageRating[oneUser].keys():
+			averageRating[oneUser][each][2] = averageRating[oneUser][each][1] / averageRating[oneUser][each][0]
 
 ![推荐平均分](./pictures/averageRating.png "推荐平均分")  
 + 计算MAE（总体的和每个用户的  
 
-    eachUserMAE = {}
-    for oneUser in averageRating.keys():
-        count = 0
-        sumD = 0.0
-        eachUserMAE.setdefault(oneUser, 0.0)
-        for movie in movieAlsoInTest[oneUser]:
-            count += 1
-            sumD = abs(averageRating[oneUser][movie][2] - userWatchedMovieTest[oneUser].get(movie))
-        if count == 0:
-            eachUserMAE[oneUser] = -1
-        else:
-            eachUserMAE[oneUser] = sumD / count
+	eachUserMAE = {}
+	for oneUser in averageRating.keys():
+		count = 0
+		sumD = 0.0
+		eachUserMAE.setdefault(oneUser, 0.0)
+		for movie in movieAlsoInTest[oneUser]:
+			count += 1
+			sumD = abs(averageRating[oneUser][movie][2] - userWatchedMovieTest[oneUser].get(movie))
+		if count == 0:
+			eachUserMAE[oneUser] = -1
+		else:
+			eachUserMAE[oneUser] = sumD / count
 
 ![用户MAE](./pictures/eachUserMAE.png "每个用户的MAE")  
 
