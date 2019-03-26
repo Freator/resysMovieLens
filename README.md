@@ -1,24 +1,35 @@
 # 推荐系统课程作业  
 本次课程作业在small-movielens数据集的基础上，对用户（待续）  
-**1. 变量说明**  
-users :保存所有用户，不重复list类型  
-userWatchedMovie :保存所有用户看过的所有电影，字典嵌套字典类型  
-movieUser :保存用户与用户之间共同看过的电影，字典嵌套字典嵌套list  
-userSimilarity :保存用户与用户之间的相似度（皮尔逊相似度）  
-allUserTopNSim :保存每个用户都取前n(n=10)个最相似的用户，以及相似度  
-recommendedMovies :从最相似的用户中推荐，每个相似用户推荐两部，同时计算出预测值并保存在这个变量里  
-usersTest :测试集文件中的所有用户，同users  
-userWatchedMovieTest :测试集文件中所有用户看过的所有电影，同userWatchedMovie  
-movieAlsoInTest :保存推荐的电影正好也在用户测试数据中看过的那一些电影，以便后面进行MAE计算  
-averageRating :保存每个用户对被推荐的电影的预测平均分  
-eachUserMAE :保存对每个用户而言计算出的MAE  
-**2. 程序介绍**  
+## **1. 变量说明**  
+**users** :保存所有用户，不重复list类型  
+存储结构：[user1,user2,...]  
+**userWatchedMovie** :保存所有用户看过的所有电影，字典嵌套字典类型  
+存储结构：{user1:{movie1:rating1,movie2:rating2,...},user2:{...},...}  
+**movieUser** :保存用户与用户之间共同看过的电影，字典嵌套字典嵌套list  
+存储结构：{user1:{user2:[movie1,...],user3:[...],...},user2:{user3:[...],...},...}  
+**userSimilarity** :保存用户与用户之间的相似度（皮尔逊相似度）  
+存储结构：{user1:{user2:sim,user3:sim,...},user2:{user3:sim,...},...}  
+**allUserTopNSim** :保存每个用户都取前n(n=10)个最相似的用户，以及相似度  
+存储结构：{user1:{user01:sim,user02:sim,...},user2:{user01:sim,...},...}  
+**recommendedMovies** :从最相似的用户中推荐，每个相似用户推荐两部，同时计算出预测值并保存在这个变量里  
+存储结构：{user1:{user01:{movie01:predictionRating,...},user02:[...],...},user2:{user01:[...],...},...}  
+**usersTest** :测试集文件中的所有用户  
+存储结构：同users  
+**userWatchedMovieTest** :测试集文件中所有用户看过的所有电影  
+存储结构：同userWatchedMovie  
+**movieAlsoInTest** :保存推荐的电影正好也在用户测试数据中看过的那一些电影，以便后面进行MAE计算  
+存储结构：{user1:[movie1,movie2,...],...}  
+**averageRating** :保存每个用户对被推荐的电影的预测平均分  
+存储结构：{user1:{movie01:[count,sumPreRating,averageRating],...},...}  
+**eachUserMAE** :保存对每个用户而言计算出的MAE  
+存储结构：{user1:MAE,user2:MAE,...}  
+## **2. 程序介绍**  
 <1>首先对数据进行处理，我们可以看到原始数据文件`u1.base`中的数据如下图所示  
 ![原始数据](./pictures/baseData.png "原始数据")  
 数据是由(userId, movieId, rating, timestamp)四个部分组成，我们这里使用的是前3个数据属性，即userId, movieId和rating  
 用变量users保存所有的userId,userWatchedMovie保存所有的用户看过的所有的电影  
 
-![用户看过的电影](./pictures/userWatchedMovie.png "用户看过的电影")
+![用户看过的电影](./pictures/userWatchedMovie.png "用户看过的电影")  
 然后是对测试数据文件的读取，同上面做类似的处理  
 <2>计算用户与用户之间共同看过的电影  
 ![共同看过的电影](./pictures/movieUser.png "共同看过的电影")  
