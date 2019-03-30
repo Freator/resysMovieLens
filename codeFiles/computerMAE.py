@@ -67,7 +67,7 @@ for oneUser in averageRating.keys():
     eachUserMAE.setdefault(oneUser, 0.0)
     for movie in movieAlsoInTest[oneUser]:
         count += 1
-        sumD = abs(averageRating[oneUser][movie][2] - userWatchedMovieTest[oneUser].get(movie))
+        sumD += abs(averageRating[oneUser][movie][2] - userWatchedMovieTest[oneUser].get(movie))
     if count == 0:
         eachUserMAE[oneUser] = -1
     else:
