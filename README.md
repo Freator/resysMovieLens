@@ -1,16 +1,14 @@
 # 推荐系统课程作业  
-本次课程作业在small-movielens数据集的基础上，对用户、电影、评分数据进行了处理，
-然后根据Pearson相关系数计算出用户与其他用户之间的相似度，根据相似度进行推荐和
-预测评分，最后再根据数据集中的测试数据，计算该推荐系统的MAE，预测命中率等。
+本次课程作业在small-movielens数据集的基础上，对用户、电影、评分数据进行了处理，然后根据Pearson相关系数计算出用户与其他用户之间的相似度，根据相似度进行推荐和预测评分，最后再根据数据集中的测试数据，计算该推荐系统的MAE，预测命中率等。
 ## **1. 变量说明**  
 **users** :保存所有用户，不重复list类型  
-存储结构：[user1,user2,...]  
+存储结构：[user1, user2,...]  
 **userWatchedMovie** :保存所有用户看过的所有电影，字典嵌套字典类型  
-存储结构：{user1:{movie1:rating1,movie2:rating2,...},user2:{...},...}  
+存储结构：{user1:{movie1:rating1, movie2:rating2, ...}, user2:{...},...}  
 **movieUser** :保存用户与用户之间共同看过的电影，字典嵌套字典嵌套list  
 存储结构：{user1:{user2:[movie1,...],user3:[...],...},user2:{user3:[...],...},...}  
 **userSimilarity** :保存用户与用户之间的相似度（皮尔逊相似度）  
-存储结构：{user1:{user2:sim,user3:sim,...},user2:{user3:sim,...},...}  
+存储结构：{user1:{user2:sim, user3:sim,...}, user2:{user3:sim, ...}, ...}  
 **allUserTopNSim** :保存每个用户都取前n(n=10)个最相似的用户，以及相似度  
 存储结构：{user1:{user01:sim,user02:sim,...},user2:{user01:sim,...},...}  
 **recommendedMovies** :从最相似的用户中推荐，每个相似用户推荐两部，同时计算出预测值并保存在这个变量里  
@@ -103,8 +101,8 @@
 ![推荐和预测评分](./pictures/recoMovieWithRating.png "推荐和预测评分")  
 + 从推荐的电影和测试集中找到一起看过的电影  
 
-		movieAlsoInTest = {}
-		for oneUser in usersTest:
+        movieAlsoInTest = {}
+        for oneUser in usersTest:
 			movieAlsoInTest.setdefault(oneUser, [])
 			for simUser in recommendedWithRating[oneUser].keys():
 				for movie in recommendedWithRating[oneUser][simUser].keys():
@@ -157,6 +155,6 @@
 另外可以引入准确度或者说命中率  
 
 
-
-@Author : Freator  
+@time : 2019/3/30
+@Author : [Freator](https://github.com/freator)  
 @Email : bingcongtang@gmail.com
