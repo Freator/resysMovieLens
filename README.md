@@ -151,7 +151,7 @@
 		recommendedMAE = recommendedMAE / countMAE
 
     ![系统MAE](./pictures/recsysMAE.png "推荐系统平均MAE")  
-    另外可以引入准确度或者说命中率  
+    另外可以引入**准确度**或者说**命中率**  
 + 结果分析  
 笔者对`u1-u5`以及`ua-ub`数据集中的数据分别进行了实验测试，并统计出如下结果  
 ![表格分析01](./pictures/table01.png "表格分析")  
