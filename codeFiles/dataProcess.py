@@ -41,7 +41,7 @@ for a in movieUser.keys():
             # 下面开始进行相似度的计算，皮尔森相关系数
             avgUserA = 0  # A用户打分的平均值
             avgUserB = 0  # B用户打分的平均值
-            numerate = 0  # Pearson的分子部分
+            numerator = 0  # Pearson的分子部分
             denominatorA = 0  # Pearson的分母A部分
             denominatorB = 0  # Pearson的分母B部分
             count = len(movieUser[a][b])  # 保存两个用户共同看过的电影的数量
@@ -69,12 +69,12 @@ for a in movieUser.keys():
                 tempA = float(userWatchedMovie[a][m]) - avgUserA
                 tempB = float(userWatchedMovie[b][m]) - avgUserB
                 # print(tempA)
-                numerate += tempA * tempB
+                numerator += tempA * tempB
                 denominatorA += pow(tempA, 2) * 1.0
                 denominatorB += pow(tempB, 2) * 1.0
             # print(numerate)
             if denominatorA != 0 and denominatorB != 0:
-                userSimilarity[a][b] = factor * (numerate / (sqrt(denominatorA * denominatorB)))
+                userSimilarity[a][b] = factor * (numerator / (sqrt(denominatorA * denominatorB)))
             else:
                 userSimilarity[a][b] = 0
 
