@@ -1,27 +1,27 @@
 # 推荐系统课程作业  
 本次课程作业在small-movielens数据集的基础上，对用户、电影、评分数据进行了处理，然后根据Pearson相关系数计算出用户与其他用户之间的相似度，根据相似度进行推荐和预测评分，最后再根据数据集中的测试数据，计算该推荐系统的MAE，预测命中率等。
 ## **1. 变量说明**  
-**`users`** :保存所有用户，不重复`list`类型  
+**users** :保存所有用户，不重复`list`类型  
 存储结构：`[user1, user2,...]`  
-**`userWatchedMovie`** :保存所有用户看过的所有电影，字典嵌套字典类型  
+**userWatchedMovie** :保存所有用户看过的所有电影，字典嵌套字典类型  
 存储结构：`{user1:{movie1:rating1, movie2:rating2, ...}, user2:{...},...}`  
-**`movieUser`** :保存用户与用户之间共同看过的电影，字典嵌套字典嵌套`list`  
+**movieUser** :保存用户与用户之间共同看过的电影，字典嵌套字典嵌套`list`  
 存储结构：`{user1:{user2:[movie1,...],user3:[...],...},user2:{user3:[...],...},...}`  
-**`userSimilarity`** :保存用户与用户之间的相似度（**皮尔逊相似度**）  
+**userSimilarity** :保存用户与用户之间的相似度（皮尔逊相似度）  
 存储结构：`{user1:{user2:sim, user3:sim,...}, user2:{user3:sim, ...}, ...}`  
-**`allUserTopNSim`** :保存每个用户都取前`n=10`个最相似的用户，以及相似度  
+**allUserTopNSim** :保存每个用户都取前`n=10`个最相似的用户，以及相似度  
 存储结构：`{user1:{user01:sim,user02:sim,...},user2:{user01:sim,...},...}`  
-**`recommendedMovies`** :从最相似的用户中推荐，每个相似用户推荐两部，同时计算出预测值并保存在这个变量里  
+**recommendedMovies** :从最相似的用户中推荐，每个相似用户推荐两部，同时计算出预测值并保存在这个变量里  
 存储结构：`{user1:{user01:{movie01:predictionRating,...},user02:[...],...},user2:{user01:[...],...},...}`  
-**`usersTest`** :测试集文件中的所有用户  
+**usersTest** :测试集文件中的所有用户  
 存储结构：同`users`  
-**`userWatchedMovieTest`** :测试集文件中所有用户看过的所有电影  
+**userWatchedMovieTest** :测试集文件中所有用户看过的所有电影  
 存储结构：同`userWatchedMovie`  
-**`movieAlsoInTest`** :保存推荐的电影正好也在用户测试数据中看过的那一些电影，以便后面进行MAE计算  
+**movieAlsoInTest** :保存推荐的电影正好也在用户测试数据中看过的那一些电影，以便后面进行MAE计算  
 存储结构：`{user1:[movie1,movie2,...],...}`  
-**`averageRating`** :保存每个用户对被推荐的电影的预测平均分  
+**averageRating** :保存每个用户对被推荐的电影的预测平均分  
 存储结构：`{user1:{movie01:[count,sumPreRating,averageRating],...},...}`  
-**`eachUserMAE`** :保存对每个用户而言计算出的`MAE`  
+**eachUserMAE** :保存对每个用户而言计算出的`MAE`  
 存储结构：`{user1:MAE,user2:MAE,...}`  
 ## **2. 程序介绍**  
 + 首先对数据进行处理，我们可以看到原始数据文件`u1.base`中的数据如下图所示  
