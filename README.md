@@ -37,7 +37,7 @@
 
             avgUserA = 0
             avgUserB = 0
-            numerate = 0
+            numerator = 0
             denominatorA = 0
             denominatorB = 0
             count = len(movieUser[a][b])
@@ -57,11 +57,11 @@
             for m in movieUser[a][b]:
                 tempA = float(userWatchedMovie[a][m]) - avgUserA
                 tempB = float(userWatchedMovie[b][m]) - avgUserB
-                numerate += tempA * tempB
+                numerator += tempA * tempB
                 denominatorA += pow(tempA, 2) * 1.0
                 denominatorB += pow(tempB, 2) * 1.0
             if denominatorA != 0 and denominatorB != 0:
-                userSimilarity[a][b] = factor * (numerate / (sqrt(denominatorA * denominatorB)))
+                userSimilarity[a][b] = factor * (numerator / (sqrt(denominatorA * denominatorB)))
             else:
                 userSimilarity[a][b] = 0
 
