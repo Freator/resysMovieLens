@@ -29,8 +29,7 @@
 ## **3. 程序介绍**  
 + 首先对数据进行处理，我们可以看到原始数据文件`u1.base`中的数据如下图所示  
 ![原始数据](./pictures/baseData.png "原始数据")  
-数据是由`(userId, movieId, rating, timestamp)`四个部分组成，我们这里使用的是前三个数据属性  
-用变量`users`保存所有的用户`ID`,`userWatchedMovie`保存所有的用户看过的所有的电影  
+数据是由`(userId, movieId, rating,timestamp)`四个部分组成，我们这里使用的是前三个数据属性。用变量`users`保存所有的用户`ID`,`userWatchedMovie`保存所有的用户看过的所有的电影  
 ![用户看过的电影](./pictures/userWatchedMovie.png "用户看过的电影")  
 然后是对测试数据文件的读取，同上面做类似的处理  
 + 计算用户与用户之间共同看过的电影  
@@ -173,6 +172,6 @@
 
 
 
-@Time : 2019/3/30  
+@Date : 2019/3/31  
 @Author : [Freator Tang](https://github.com/freator)  
 @Email : bingcongtang@gmail.com
