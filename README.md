@@ -1,7 +1,7 @@
 # 推荐系统课程作业  
 本次课程作业在`small-movielens`数据集的基础上，对用户、电影、评分数据进行了处理，然后根据`Pearson`相关系数计算出用户与其他用户之间的相似度，根据相似度进行推荐和预测评分，最后再根据数据集中的测试数据，计算该推荐系统的[`MAE`](https://baike.baidu.com/item/%E5%B9%B3%E5%9D%87%E7%BB%9D%E5%AF%B9%E8%AF%AF%E5%B7%AE/9383373?fr=aladdin)等。  
 ## **1. 数据描述**  
-数据集来源于[MovieLens|GroupLens](https://grouplens.org/datasets/movielens/)网站。完整的数据集是由`943`个用户对`1682`个项目的`100000`个评分组成。每位用户至少对`20`部电影进行了评分。用户和项从`1`开始连续编号。数据是随机排列的。这是一个以选项卡分隔的：`用户id`|`项id`|`分级`|`时间戳`列表。从`1970年1月1日`UTC开始，时间戳是[`unix时间戳`](https://baike.baidu.com/item/unix%E6%97%B6%E9%97%B4%E6%88%B3/2078227?fr=aladdin)。在这些数据集的基础上，`small-movielwns`还包括`u1-u5`，`ua`，`ub`等七组测试集`(*.base)`/训练集`(*.tst)`数据。其中，`u1-u5`是以`8:2`的比例随机生成互斥的训练集和测试集；`ua`、`ub`是按照`9:1`的比例随机生成的互斥的训练集和测试集，不同的是，这两组数据的测试集中每个用户是对正好`10`不同电影进行了评分。数据集如下图所示。  
+数据集来源于[MovieLens|GroupLens](https://grouplens.org/datasets/movielens/)网站。完整的数据集是由`943`个用户对`1682`个项目的`100000`个评分组成。每位用户至少对`20`部电影进行了评分。用户和项从`1`开始连续编号。数据是随机排列的。这是一个以选项卡分隔的：`用户id`|`项id`|`分级`|`时间戳`列表。从`1970年1月1日`UTC开始，时间戳是[`unix时间戳`](https://baike.baidu.com/item/unix%E6%97%B6%E9%97%B4%E6%88%B3/2078227?fr=aladdin)。在这些数据集的基础上，`small-movielens`还包括`u1-u5`，`ua`，`ub`等七组测试集`(*.base)`/训练集`(*.test)`数据。其中，`u1-u5`是以`8:2`的比例随机生成互斥的训练集和测试集；`ua`、`ub`是按照`9:1`的比例随机生成的互斥的训练集和测试集，不同的是，这两组数据的测试集中每个用户是对正好`10`部不同电影进行了评分。数据集如下图所示。  
 ![数据集](./pictures/dataSet.png "数据集")  
 ## **2. 变量说明**  
 + **users** :保存所有用户，不重复`list`类型  
@@ -112,7 +112,7 @@
 					else:
 						continue
 
-    ![movieAlsoInTest](./pictures/movieAlsoInTest.png "测试集中用户也看过的电影")  
+    ![movieAlsoInTest](./pictures/movieAlsoInTest01.png "测试集中用户也看过的电影")  
 + **计算每个用户被推荐的每部电影的次数和平均分**  
 
 		averageRating = {}
@@ -126,7 +126,7 @@
 			for each in averageRating[oneUser].keys():
 				verageRating[oneUser][each][2] = averageRating[oneUser][each][1] / averageRating[oneUser][each][0]
 
-    ![推荐平均分](./pictures/averageRating.png "推荐平均分")  
+    ![推荐平均分](./pictures/averageRating01.png "推荐平均分")  
 + **计算`MAE`**  
 
 		eachUserMAE = {}
@@ -142,7 +142,7 @@
 			else:
 				eachUserMAE[oneUser] = sumD / count
 
-    ![用户MAE](./pictures/eachUserMAE.png "每个用户的MAE")  
+    ![用户MAE](./pictures/eachUserMAE01.png "每个用户的MAE")  
 
 		recommendedMAE = 0.0
 		countMAE = 0
