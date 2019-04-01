@@ -2,6 +2,9 @@
 from math import sqrt
 import os
 
+TOPN = 10  # 设置每个用户相似度最高的前TOPN个用户
+AMOUNT = 5  # 设置前TOPN个相似用户中每个用户给当前用户推荐的电影数量
+
 # 读取训练集数据文件
 filePath = './data/u1.base'
 users = []  # 保存所有用户，不重复list类型
@@ -80,7 +83,6 @@ for a in movieUser.keys():
 
 
 # 每个用户都取前n个最相似的用户，以便后续进行推荐
-n = 10
 # singleUserTopNSim = {}
 allUserTopNSim = {}
 
@@ -100,12 +102,12 @@ for currentUserId in users:  # 计算当前用户的最相似的前n个用户
     # 此处思想是将字典转化成list，经过排序，取得前n个值，再将list转化回字典
     # 进行排序，取前N个相似的用户，此时singleSortedSim是一个list类型：[(key,value),(key,value),(key,value),...]
     singleSortedSim = sorted(singleUserSim.items(), key=lambda item: item[1], reverse=True)
-    singleTopN = singleSortedSim[:n]  # 取出前N个最相似的值
+    singleTopN = singleSortedSim[:TOPN]  # 取出前N个最相似的值
     for single in singleTopN:
         allUserTopNSim[currentUserId][single[0]] = single[1]  # 保存当前用户计算出的TopN个相似用户以及相似度
 
 
-# 从最相似的用户中推荐，每个相似用户推荐两部，那么每个用户就能得到推荐的20部电影
+# 从最相似的用户中推荐，每个相似用户推荐number部，那么每个用户就能得到推荐的number*10部电影
 recommendedMovies = {}
 for oneUser in allUserTopNSim.keys():
     recommendedMovies.setdefault(oneUser, {})
@@ -115,7 +117,7 @@ for oneUser in allUserTopNSim.keys():
         number = 0
         recommendedMovies[oneUser].setdefault(simUser, {})
         for movie in userWatchedMovie[simUser].keys():
-            if number >= 2:
+            if number >= AMOUNT:  # 每个人推荐数量为number部的电影数
                 break
             if movie not in userWatchedMovie[oneUser].keys():  # and (movie not in recommendedMovies[oneUser]):
                 # 计算预测权值
@@ -155,7 +157,7 @@ for oneUser in allUserTopNSim.keys():
                     number += 1
             else:
                 continue
-
+'''
 # 读取测试集数据文件
 filePathTest = './data/u1.test'
 usersTest = []  # 保存所有用户，不重复list类型
@@ -168,7 +170,7 @@ with open(filePathTest, 'r') as testFile:
             usersTest.append(userIdTest)
             userWatchedMovieTest.setdefault(userIdTest, {})
         userWatchedMovieTest[userIdTest][movieIdTest] = ratingTest
-
+'''
 '''
 # 要找到在测训练集中用户没有看过，但是在测试集中用户看过并且被推荐过的电影，这样后面好计算MAE(平均绝对误差)
 movieRecommendedAlsoInTest = {}
@@ -219,5 +221,16 @@ writeFile = open(writeFilePath, 'w')
 for m in recommendedMovies.keys():
     for n in recommendedMovies[m].keys():
         writeFile.writelines([m, '\t', n, '\t', str(recommendedMovies[m][n])])
+        writeFile.write('\n')
+writeFile.close()
+
+
+writeFilePath = './data/userSimilarity.txt'
+if os.path.exists(writeFilePath):
+    os.remove(writeFilePath)
+writeFile = open(writeFilePath, 'w')
+for m in userSimilarity.keys():
+    for n in userSimilarity[m].keys():
+        writeFile.writelines([m, '\t', n, '\t', str(userSimilarity[m][n])])
         writeFile.write('\n')
 writeFile.close()
