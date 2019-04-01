@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import os
 
+AMOUNT = 5
+
 # 读取推荐文件以及推荐的电影和预测评分文件
 recommendedWithRating = {}
 fileRecom = './data/recoMovieWithRating.txt'
@@ -61,16 +63,20 @@ for oneUser in usersTest:
 
 # 计算对每个用户而言的 MAE
 eachUserMAE = {}
+recoMovieNumMoreThanAmount = 0
+recoMovieNumLessThanAmount = 0
 for oneUser in averageRating.keys():
     count = 0  # MAE的分母部分
     sumD = 0.0  # MAE的分子部分
     eachUserMAE.setdefault(oneUser, 0.0)
     for movie in movieAlsoInTest[oneUser]:
         count += 1
-        sumD += abs(averageRating[oneUser][movie][2] - userWatchedMovieTest[oneUser].get(movie))
-    if count == 0:
+        sumD += abs(averageRating[oneUser][movie][2] - userWatchedMovieTest[oneUser].get(movie))  # 之前的程序中，这里 += 写成了 = ，没有加和，导致结果偏低
+    if count < AMOUNT:
         eachUserMAE[oneUser] = -1
+        recoMovieNumLessThanAmount += 1
     else:
+        recoMovieNumMoreThanAmount += 1
         eachUserMAE[oneUser] = sumD / count
 
 # 计算总体的 MAE
@@ -114,10 +120,18 @@ writeFile.close()
 print(recommendedWithRating)
 print(userWatchedMovieTest)
 print(movieAlsoInTest)
-print(len(usersTest))
-print(countNotNull)
-print(countNull)
-print(averageRating)
-print(eachUserMAE)
-print(recommendedMAE)
+
 '''
+print('训练集中总用户数量 = %d' % len(recommendedWithRating.keys()))
+print('推荐的电影数量不小于%d部的人数 = %d' % (AMOUNT, recoMovieNumMoreThanAmount))
+print('推荐的电影数量小于%d部人数 = %d' % (AMOUNT, recoMovieNumLessThanAmount))
+print('被推荐的总人数 = %d' % (recoMovieNumLessThanAmount + recoMovieNumMoreThanAmount))
+print("测试集中用户数量 = %d " % len(usersTest))
+print('推荐的电影不为空 = %d' % countNotNull)
+print('推荐的电影为空 = %d' % countNull)
+print('命中率 = %lf ' % (recoMovieNumMoreThanAmount / len(usersTest)))
+# print(averageRating)
+# print(eachUserMAE)
+
+
+print("推荐程序MAE = %lf" % recommendedMAE)
