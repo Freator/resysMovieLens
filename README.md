@@ -184,7 +184,9 @@
     
     ![图片分析02](./pictures/chart2.png "不同TOPN下MAE比较")  
 
+一些考虑：  
+在给用户推荐的电影数AMOUT不变的情况下，TOPN越大，好像MAE会越小，甚至会比0.75要低，当然到一定程度大小后（>50），会出现错误。有如下猜测：<A> 推荐算法本身的性能问题<B>相似性计算的其他约束性条件未考虑 <c> 数据集过小，电影的总数量和用户总数量过少(笔者尝试将更大数据集（>100M）分成训练集和测试集，遗憾的是没有成功，对python数据操作还不熟悉)<D> 用户看过的电影数量过少等  
 
-@Date : 2019/3/31  
+@Date : 2019/4/1  
 @Author : [Freator Tang](https://github.com/freator)  
 @Email : bingcongtang@gmail.com
