@@ -112,7 +112,7 @@
 					else:
 						continue
 
-    ![movieAlsoInTest](./pictures/movieAlsoInTest01.png "测试集中用户也看过的电影")  
+    ![movieAlsoInTest](./pictures/movieAlsoInTest02.png "测试集中用户也看过的电影")  
 + **计算每个用户被推荐的每部电影的次数和平均分**  
 
 		averageRating = {}
