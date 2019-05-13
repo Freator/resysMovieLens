@@ -27,6 +27,8 @@
 @Author : [Freator Tang](https://github.com/freator)  
 @Email : bingcongtang@gmail.com
 
+
+Update（5/13）
 ----------
 我们使用数据分割将原数据`u.data`分割成训练集`TrainData`和测试集`TestData`（根据时间戳区分，按照用户和时间戳排序后对每个用户进行了`8:2`的分割），然后再次进行了如下实验：  
 + 只考虑每个人的推荐数量`AMOUNT`和相似度最高的推荐人数`TOPN`  
